@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d19">
+<title>WebPilot Pro - Automation Dashboard</title>
+<meta name="description" content="WebPilot Pro - Website testing, browser automation, proxy diagnostics and performance monitoring dashboard.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#080d19;color:#e8edf8}
+header{height:65px;padding:15px 20px;border-bottom:1px solid #253047;display:flex;justify-content:space-between;align-items:center;background:#101827;position:sticky;top:0;z-index:5}
+.logo{font-size:21px;font-weight:bold;color:#62a5ff}
+.logo span{color:#fff}
+.menu{background:#202e43;border:0;color:white;padding:9px 13px;border-radius:7px;font-size:19px}
+.layout{display:flex;min-height:calc(100vh - 65px)}
+aside{width:225px;background:#101827;border-right:1px solid #253047;padding:20px 12px}
+aside p{font-size:11px;color:#8393ad;margin:15px 10px 9px}
+nav button{display:block;width:100%;text-align:left;background:transparent;border:0;color:#b9c6da;padding:12px;border-radius:7px;margin:3px 0;font-size:14px}
+nav button.active,nav button:hover{background:#1e3455;color:#75b5ff}
+main{padding:24px;width:100%;max-width:1400px;margin:auto}
+h1{font-size:25px;margin-bottom:8px}
+.sub{color:#91a0b8;font-size:13px;margin-bottom:22px}
+.notice{background:#172d43;border:1px solid #28547a;padding:13px;border-radius:9px;color:#a9d7ff;font-size:13px;line-height:1.6;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:22px}
+.card{background:#111d2e;border:1px solid #263750;padding:17px;border-radius:11px}
+.stat{font-size:25px;font-weight:bold;margin:10px 0 5px}
+.muted{color:#91a0b8;font-size:12px}
+.section{font-size:17px;margin:23px 0 13px}
+.modules{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+.module{background:#111d2e;border:1px solid #263750;border-radius:11px;padding:18px}
+.module h3{font-size:15px;margin-bottom:9px}
+.module p{font-size:12px;color:#91a0b8;line-height:1.6}
+button.action{background:#2469ce;color:white;border:0;padding:10px 15px;border-radius:7px;margin-top:14px;font-size:13px}
+button.action:active{opacity:.7}
+input,select,textarea{width:100%;background:#0a1423;color:white;border:1px solid #30415b;padding:12px;border-radius:7px;margin:8px 0;font-size:14px}
+label{font-size:12px;color:#b8c7dc;display:block;margin-top:12px}
+.panel{background:#111d2e;border:1px solid #263750;border-radius:11px;padding:18px;margin-top:15px}
+.hidden{display:none}
+.status{color:#65d9a1;font-size:12px}
+footer{color:#71819b;text-align:center;font-size:11px;padding:25px}
+@media(max-width:750px){
+ .layout{display:block}
+ aside{display:none;width:100%;border-right:0;border-bottom:1px solid #253047}
+ aside.show{display:block}
+ main{padding:17px}
+ .grid{grid-template-columns:repeat(2,1fr)}
+ .modules{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">WEBPILOT <span>PRO</span></div>
+ <button class="menu" onclick="toggleMenu()">☰</button>
+</header>
+<div class="layout">
+<aside id="sidebar">
+ <nav>
+ <p>MAIN MENU</p>
+ <button class="active" onclick="showPage('dashboard',this)">▦ Dashboard</button>
+ <button onclick="showPage('browser',this)">◉ Browser Testing</button>
+ <button onclick="showPage('traffic',this)">↗ Traffic Testing</button>
+ <button onclick="showPage('proxy',this)">◈ Proxy Manager</button>
+ <button onclick="showPage('rpa',this)">⚙ RPA Automation</button>
+ <button onclick="showPage('schedule',this)">◷ Scheduler</button>
+ <button onclick="showPage('settings',this)">⚙ Settings</button>
+ <p>INFORMATION</p>
+ <button onclick="showPage('about',this)">ⓘ About</button>
+ </nav>
+</aside>
+
+<main>
+<section id="dashboard">
+<h1>Dashboard</h1>
+<p class="sub">Welcome to your WebPilot Pro control center.</p>
+<div class="notice">ⓘ Testing mode: Use this software only on websites you own or have permission to test. It does not generate artificial advertising or analytics traffic.</div>
+<div class="grid">
+ <div class="card"><div class="muted">Browser Profiles</div><div class="stat">0</div><div class="muted">Created profiles</div></div>
+ <div class="card"><div class="muted">Proxy Slots</div><div class="stat">500</div><div class="muted">Available test slots</div></div>
+ <div class="card"><div class="muted">RPA Tasks</div><div class="stat" id="tasks">0</div><div class="muted">Saved tasks</div></div>
+ <div class="card"><div class="muted">Test Status</div><div class="stat status">Ready</div><div class="muted">Waiting for test</div></div>
+</div>
+<h2 class="section">Automation Modules</h2>
+<div class="modules">
+ <div class="module"><h3>◉ Browser Testing</h3><p>Manage browser profiles, screen sizes and browser compatibility tests.</p><button class="action" onclick="showPage('browser')">Open Module</button></div>
+ <div class="module"><h3>↗ Traffic Source Testing</h3><p>Test direct navigation, search links, referral links and Maps links without manufacturing visits.</p><button class="action" onclick="showPage('traffic')">Open Module</button></div>
+ <div class="module"><h3>◈ Proxy Manager</h3><p>Import authorized proxies, check connection and measure response time.</p><button class="action" onclick="showPage('proxy')">Open Module</button></div>
+ <div class="module"><h3>⚙ RPA Automation</h3><p>Create and manage authorized website testing workflows.</p><button class="action" onclick="showPage('rpa')">Open Module</button></div>
+</div>
+</section>
+
+<section id="browser" class="hidden">
+<h1>Browser Testing</h1><p class="sub">Website compatibility configuration</p>
+<div class="panel">
+<label>Website URL</label><input id="browserUrl" type="url" placeholder="https://example.com">
+<label>Browser Profile</label>
+<select id="browserType"><option>Chrome Desktop</option><option>Chrome Mobile</option><option>Firefox</option><option>Safari Compatibility</option></select>
+<label>Screen Resolution</label>
+<select><option>360 × 800 - Mobile</option><option>390 × 844 - Mobile</option><option>768 × 1024 - Tablet</option><option>1366 × 768 - Desktop</option><option>1920 × 1080 - Desktop</option></select>
+<label>Browser Mode</label><select><option>Visible</option><option>Headless (server supported)</option></select>
+<button class="action" onclick="openTest()">Open Website Test</button>
+<p class="muted" id="browserResult"></p>
+</div>
+</section>
+
+<section id="traffic" class="hidden">
+<h1>Traffic Source Testing</h1><p class="sub">Verify website entry points and links</p>
+<div class="panel">
+<label>Website URL</label><input id="trafficUrl" type="url" placeholder="https://example.com">
+<label>Test Source</label>
+<select id="source"><option>Direct Navigation</option><option>Organic Search Link</option><option>Facebook Referral Link</option><option>YouTube Referral Link</option><option>Instagram Referral Link</option><option>Google Maps Link</option><option>Custom Referral Link</option></select>
+<label>Source Link (optional)</label><input id="sourceUrl" type="url" placeholder="Paste the source link">
+<button class="action" onclick="testSource()">Validate Entry Link</button>
+<p id="sourceResult" class="muted"></p>
+</div>
+</section>
+
+<section id="proxy" class="hidden">
+<h1>Proxy Manager</h1><p class="sub">Authorized proxy diagnostics</p>
+<div class="notice">Use only proxies you own or are authorized to test. Public free proxies can be unsafe and unreliable.</div>
+<div class="panel">
+<label>Import Proxy List (one per line)</label>
+<textarea id="proxyList" rows="6" placeholder="host:port&#10;username:password@host:port"></textarea>
+<button class="action" onclick="importProxies()">Import Proxies</button>
+<button class="action" onclick="clearProxies()" style="background:#74404b">Clear List</button>
+<p id="proxyResult" class="muted">0 proxy entries imported.</p>
+</div>
+</section>
+
+<section id="rpa" class="hidden">
+<h1>RPA Automation</h1><p class="sub">Manage website test workflows</p>
+<div class="panel">
+<label>Task Name</label><input id="taskName" placeholder="Example: Homepage navigation test">
+<label>Website URL</label><input id="taskUrl" placeholder="https://example.com">
+<label>Action</label><select id="taskAction"><option>Open Homepage</option><option>Check Page Title</option><option>Check Page Load</option><option>Check Link</option></select>
+<button class="action" onclick="saveTask()">Save Workflow</button>
+<div id="taskResult" class="muted" style="margin-top:15px"></div>
+</div>
+</section>
+
+<section id="schedule" class="hidden">
+<h1>Scheduler</h1><p class="sub">Plan authorized testing sessions</p>
+<div class="panel">
+<label>Task</label><input id="scheduleName" placeholder="Testing task name">
+<label>Date & Time</label><input id="scheduleTime" type="datetime-local">
+<button class="action" onclick="saveSchedule()">Save Schedule</button>
+<p id="scheduleResult" class="muted"></p>
+</div>
+</section>
+
+<section id="settings" class="hidden">
+<h1>Settings</h1><p class="sub">Dashboard preferences</p>
+<div class="panel">
+<label>Dashboard Theme</label><select><option>Dark</option><option>System</option></select>
+<label>Language</label><select><option>English</option><option>Hindi</option></select>
+<p class="muted">Settings are currently local to this browser.</p>
+</div>
+</section>
+
+<section id="about" class="hidden">
+<h1>About WebPilot Pro</h1>
+<div class="panel"><h3>WebPilot Pro</h3><p class="muted" style="margin-top:10px;line-height:1.8">Website testing and automation dashboard. Built for responsive browser checks, authorized proxy diagnostics and repeatable testing workflows.</p><p class="status" style="margin-top:12px">Version 1.0 - Frontend Preview</p></div>
+</section>
+<footer>WEBPILOT PRO • Website Testing Suite • Version 1.0</footer>
+</main>
+</div>
+<script>
+function toggleMenu(){document.getElementById('sidebar').classList.toggle('show')}
+function showPage(id,btn){
+ document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+ document.getElementById(id).classList.remove('hidden');
+ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+ if(btn)btn.classList.add('active');
+ document.getElementById('sidebar').classList.remove('show');
+}
+function validUrl(value){
+ try{let u=new URL(value);return u.protocol==='https:'||u.protocol==='http:'}catch(e){return false}
+}
+function openTest(){
+ let u=document.getElementById('browserUrl').value;
+ if(!validUrl(u)){alert('Enter a valid website URL');return}
+ window.open(u,'_blank','noopener');
+ document.getElementById('browserResult').textContent='Website opened. Full browser testing will be connected to the backend in the next version.';
+}
+function testSource(){
+ let u=document.getElementById('trafficUrl').value;
+ if(!validUrl(u)){alert('Enter a valid website URL');return}
+ document.getElementById('sourceResult').textContent='Target URL is valid. This checks the link only; it does not create artificial visits.';
+}
+let proxies=[];
+function importProxies(){
+ let values=document.getElementById('proxyList').value.split('\n').map(x=>x.trim()).filter(Boolean);
+ proxies=[...new Set([...proxies,...values])];
+ document.getElementById('proxyResult').textContent=proxies.length+' unique proxy entries imported locally. Connection testing requires backend setup.';
+}
+function clearProxies(){
+ proxies=[];
+ document.getElementById('proxyList').value='';
+ document.getElementById('proxyResult').textContent='Proxy list cleared.';
+}
+let tasks=[];
+function saveTask(){
+ let n=document.getElementById('taskName').value.trim();
+ let u=document.getElementById('taskUrl').value.trim();
+ if(!n||!validUrl(u)){alert('Enter a task name and valid URL');return}
+ tasks.push({name:n,url:u,action:document.getElementById('taskAction').value});
+ document.getElementById('tasks').textContent=tasks.length;
+ document.getElementById('taskResult').textContent='Saved: '+n+' (local preview only)';
+}
+function saveSchedule(){
+ let n=document.getElementById('scheduleName').value.trim();
+ let t=document.getElementById('scheduleTime').value;
+ if(!n||!t){alert('Enter task name and date/time');return}
+ document.getElementById('scheduleResult').textContent='Schedule saved in this page preview. Server scheduling will be added later.';
+}
+</script>
+</body>
+</html>
